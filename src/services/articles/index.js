@@ -1,12 +1,18 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const q2m = require("query-to-mongo")
 const ArticleSchema = require("./schema")
 const ArticleRouter = express.Router()
 const uniqid = require("uniqid")
 
 ArticleRouter.get("/", async (req, res, next) => {
 	try {
+		const query = q2m(req.query)
 		const articles = await ArticleSchema.find()
+			.sort(query.options.sort)
+			.skip(query.options.offset)
+			.limit(query.options.size)
+			.populate("author")
 		res.send(articles)
 	} catch (error) {
 		return next(error)
@@ -15,7 +21,7 @@ ArticleRouter.get("/", async (req, res, next) => {
 
 ArticleRouter.get("/:id", async (req, res, next) => {
 	try {
-		const article = await ArticleSchema.findById(req.params.id)
+		const article = await ArticleSchema.findArticleWithAuthors(req.params.id)
 		res.send(article)
 	} catch (error) {
 		return next(error)

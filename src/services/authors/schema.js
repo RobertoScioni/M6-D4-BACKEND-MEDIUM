@@ -10,6 +10,5 @@ const AuthorSchema = new Schema(
 	{ timestamps: true }
 )
 //{ type: "ObjectId", index: true }
-AuthorSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model("Author", AuthorSchema)
