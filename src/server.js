@@ -16,6 +16,7 @@ const {
 	catchAllHandler,
 } = require("./services/error")
 const ArticleRouter = require("./services/articles")
+const AuthorRouter = require("./services/authors")
 /**
  * initializations
  */
@@ -26,6 +27,7 @@ const port = process.env.PORT || 2001
 server.use(cors())
 server.use(express.json())
 server.use("/articles", ArticleRouter)
+server.use("/authors", AuthorRouter)
 server.use(notFound)
 server.use(forbidden)
 server.use(badRequest)
